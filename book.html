@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+	
+		<title></title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		
+		<link rel="stylesheet" type="text/css" href="core/css/app.min.css" />
+		
+		<script type="text/javascript" src="core/js/app.min.js"></script>
+		<script type="text/javascript" src="content/config.js" charset="UTF-8"></script>
+		
+	</head>
+	
+	<body>		<div class="top-bar top-bar-fixed hidden-print">
+			
+			<div class="clearfix button-bar text-center">
+			
+				<div class="pull-left">
+					<a class="btn btn-primary" href="index.html">&nbsp;<span class="glyphicon glyphicon-home"></span>&nbsp;<span class="hidden-xs">Acasă&nbsp;</span></a>&nbsp;
+					
+					<div class="btn-group">
+						<button class="btn btn-primary dropdown-toggle tt" title="Ajutor" data-placement="right" data-toggle="dropdown">&nbsp;<span class="glyphicon glyphicon-question-sign"></span>&nbsp;</button>
+						<div class="dropdown-menu dropdown-box text-left">
+							<p><strong>Navigare</strong></p>
+							<p>Pentru a naviga între paginile manualului puteți utiliza butoanele sub formă de săgeți, situate pe marginea stângă, respectiv pe cea dreaptă a zonei de lucru. De asemenea, puteți utiliza meniul "Cuprins" pentru saltul către capitolul dorit. Paginile manualului pot fi mărite / micșorate cu ajutorul butoanelor "+" / "-", din partea de sus a zonei de lucru.</p>
+							<br />
+							<p><strong>Activități</strong></p>
+							<p>Fiecare pagină a manualului digital conține una sau mai multe activități interactive. Acestea pot fi accesate utilizând simbolurile evidențiate pe marginile paginilor sau din meniul "Activități".</p>
+						</div>
+					</div>
+					
+				</div>
+
+				<form class="form-inline no-margin-bottom hidden-xs" style="display: inline-block;" id="form-page-n">
+					<div class="form-group">
+						<div class="input-group" style="width: 170px;">
+							<span class="input-group-btn"><span class="btn btn-default" disabled>Pagina</span></span>
+							<input type="text" class="form-control text-center" maxlength="3" value="1" id="input-current-page">
+							<span class="input-group-btn"><button class="btn btn-default" type="submit" id="btn-page-n">OK</button></span>
+						</div>
+					</div>
+				</form>&nbsp;
+			
+				<div class="btn-group hidden-xs">
+					<span class="btn btn-default" disabled>&nbsp;<span class="glyphicon glyphicon-search"></span>&nbsp;</span>
+					<button class="btn btn-default tt" title="Micșorare" data-placement="bottom" id="btn-zoom-out">&nbsp;<span class="glyphicon glyphicon-minus"></span>&nbsp;</button>
+					<button class="btn btn-default tt" title="Mărire" data-placement="bottom" id="btn-zoom-in">&nbsp;<span class="glyphicon glyphicon-plus"></span>&nbsp;</button>
+				</div>&nbsp;
+				
+				<button class="btn btn-default tt hidden-xs hidden-sm" title="Marchează / Desenează" data-placement="bottom" id="btn-draw-marker">&nbsp;<span class="glyphicon glyphicon-edit"></span>&nbsp;
+				</button>&nbsp;
+<!-- 				<button class="btn btn-default tt" title="Ecran complet" data-placement="bottom" id="btn-fullscreen">&nbsp;<span class="glyphicon glyphicon-fullscreen"></span>&nbsp;</button> -->
+				
+				
+				<div class="pull-right">
+					<div class="btn-group">
+						<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">&nbsp;<span class="glyphicon glyphicon-th-list"></span>&nbsp;<span class="hidden-xs">Activități</span><span class="badge activities-badge margin-left">0</span>&nbsp;</button>
+						<ul class="dropdown-menu text-left pull-right dropdown-menu-scrollable" id="list-activities">
+							
+						</ul>
+					</div>
+					
+					<div class="btn-group hidden-xs margin-left-5 hide">
+						<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">&nbsp;<span class="glyphicon glyphicon-book"></span>&nbsp;<span class="hidden-sm">Bibliotecă</span>&nbsp;</button>
+						<ul class="dropdown-menu text-left pull-right dropdown-menu-scrollable" id="list-books">
+							
+						</ul>
+					</div>
+					
+					<div class="btn-group margin-left-5">
+						<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">&nbsp;<span class="glyphicon glyphicon-bookmark"></span>&nbsp;<span class="hidden-xs hidden-sm">Cuprins&nbsp;</span></button>
+						<ul class="dropdown-menu text-left pull-right dropdown-menu-scrollable" id="list-summary">
+							
+						</ul>
+					</div>
+				</div>
+			
+			
+			</div>
+			
+		</div> <!-- end top bar -->
+		
+<!-- 		<div id="console" style="position: absolute; z-index: 1000; background: #fff; padding: 5px;"></div> -->
+		
+		<div class="book-canvas">
+
+			<div class="pages-container">
+			
+				<div class="shadow"></div>
+			
+				<div class="page">
+					<img class="ajax" src="core/img/ajax-loader.gif" />
+					<img src="core/img/1px.png" />
+				</div>
+				
+				<div class="page">
+					<img class="ajax" src="core/img/ajax-loader.gif" />
+					<img src="core/img/1px.png" />
+				</div>
+				
+			</div> <!-- end pages container -->
+				
+		</div> <!-- end book canvas -->
+		
+		<a class="btn-page-nav btn-page-nav-left btn-page-prev tt" title="Pagina precedentă" data-placement="right" href="#"><span class="glyphicon glyphicon-triangle-left"></span></a>
+		<a class="btn-page-nav btn-page-nav-right btn-page-next tt" title="Pagina următoare" data-placement="left" href="#"><span class="glyphicon glyphicon-triangle-right"></span></a>
+	
+		<script type="text/javascript">
+			Book.init();
+		</script>
+		
+				
+		
+		<div class="modal fade" id="modal-content" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-content modal-lg">
+				<div class="modal-content">
+				
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+						
+						<div class="pull-right modal-toolbar">
+							
+							<button type="button" class="hide tt" data-hide="true" title="Înapoi" data-placement="bottom" id="btn-prev">
+								<span class="glyphicon glyphicon-arrow-left"></span>
+							</button>
+							
+							<button type="button" class="hide tt" data-hide="true" title="Înainte" data-placement="bottom" id="btn-next" style="margin-right: 30px;">
+								<span class="glyphicon glyphicon-arrow-right"></span>
+							</button>
+							
+							<button type="button" class="hide tt" data-hide="true" title="Mărește / Micșorează" data-placement="bottom" id="btn-zoom">
+								<span class="glyphicon glyphicon-zoom-in"></span>
+							</button>
+							
+							<button type="button" class="hide tt" data-hide="true" title="Printează" data-placement="bottom" id="btn-print">
+								<span class="glyphicon glyphicon-print"></span>
+							</button>
+							
+							<button type="button" class="tt" title="Marchează / Desenează" data-placement="bottom" id="btn-draw-modal">
+								<span class="glyphicon glyphicon-edit"></span>
+							</button>
+							
+							<button type="button" class="tt" title="Ajutor" data-placement="bottom" id="btn-help">
+								<span class="glyphicon glyphicon-question-sign"></span>
+							</button>
+						
+						</div>
+						
+						<h4 class="modal-title content-title"></h4>
+					</div>
+					
+					<div class="modal-body"></div>
+					
+				</div>
+			</div>
+		</div>
+		
+		<!-- TEMPLATES -->
+		
+		<div data-template="draw-toolbox" class="hide">
+			
+			<div class="panel panel-info" id="draw-toolbox">
+				
+				<div class="panel-heading">
+					Unelte desenare 
+					<div class="pull-right" style="margin-left: 50px;">
+						<a href="#" class="toggle"><span class="glyphicon glyphicon-collapse-up"></span></a>
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<p>Culoare</p>
+					<div class="draw-colors" style="margin-bottom: 10px;"></div>
+					
+					<p>Dimensiune creion</p>
+					<div class="draw-sizes"></div>
+				</div>
+				
+				<div class="panel-footer text-center">
+					<a href="#" id="btn-draw-print"><span class="glyphicon glyphicon-print"></span> Printează desenul</a>
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div data-template="dragdropgroup-4" class="hide">
+		
+			<div class="row">
+				
+				<div class="col-xs-3">
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+				</div>
+				
+				<div class="col-xs-6">
+					<div class="well well-sm selected dragdropgroup-drag-area"></div>
+				</div>
+				
+				<div class="col-xs-3">
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+				</div>
+				
+			</div>
+			
+		</div> <!-- end template dragdropgroup-4 -->
+		
+		<div data-template="dragdropgroup-2" class="hide">
+		
+			<div class="row">
+				
+				<div class="col-xs-3">
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+					<div class="well well-sm well-blue dragdropgroup-drop-area droppable"></div>
+				</div>
+				
+				<div class="col-xs-9">
+					<div class="well well-sm selected dragdropgroup-drag-area"></div>
+				</div>
+				
+			</div>
+			
+		</div> <!-- end template dragdropgroup-2 -->
+		
+		<div data-template="puzzle" class="hide">
+			
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="well well-sm">
+						<img id="puzzle-img" src="" />
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="well well-sm">
+						<div id="puzzle-pile"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div> <!-- end template puzzle -->
+		
+		<div data-template="timeline" class="hide">
+			
+			<div class="row">
+				<div class="col-sm-offset-3 col-sm-6">
+					
+					<p class="text-center">Poziția curentă pe axă</p>
+					
+					<div class="progress" style="height: 7px;">
+						<div class="progress-bar progress-bar-success timeline-progress-bar" role="progressbar"></div>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-12">
+					
+					<div class="timeline-center"></div>
+					
+					<div class="timeline-arrow"></div>
+					
+					<div class="timeline-wrapper">
+					
+						<div class="timeline timeline-top"></div>
+						
+						<div class="timeline-axis"></div>
+						
+						<div class="timeline timeline-bottom"></div>
+						
+					</div> <!-- end timeline-wrapper -->
+					
+				</div>
+			</div>
+			
+		</div> <!-- end template puzzle -->
+		
+		<div data-template="content" class="hide">
+			
+			<audio id="content-misc-audio"></audio>
+			
+			<div class="container-fluid">
+				
+				<div class="alert alert-warning alert-dismissible margin-top no-margin-bottom" role="alert" id="alert-help">
+					<button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+					<div id="help">
+									
+						<div class="help help-singlechoice help-singlechoiceadvanced hide">
+							<p><strong>Selecție unică</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru alegerea variantei de răspuns corecte, prin clic pe căsuța corespunzătoare.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-multiplechoice hide">
+							<p><strong>Selecție multiplă</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru alegerea variantelor de răspuns corecte, prin clic pe căsuțele corespunzătoare.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+				
+						<div class="help help-sorting hide">
+							<p><strong>Ordonare</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru aranjarea elementelor, astfel: mențineți clic pe elementul dorit, apoi deplasați mouse-ul în așa fel încât elementul să fie repoziționat corespunzător.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-dragdrop hide">
+							<p><strong>Asociere</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru asocierea elementelor din partea de sus a zonei de lucru cu cele din partea de jos, astfel: mențineți clic pe elementul dorit, apoi deplasați mouse-ul în așa fel încât elementul să fie repoziționat corespunzător.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-input help-inputadvanced hide">
+							<p><strong>Completare</strong></p>
+							<p>Urmăriți cerința, apoi utilizați tastatura pentru completarea răspunsurilor în căsuțele corespunzătoare.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-video hide">
+							<p><strong>Video</strong></p>
+							<p>Apăsați butonul verde <b>Start</b> pentru derularea materialului video sau pentru pauză, iar pe cel roșu <b>Stop</b> pentru reluare.</p>
+							<div>Alternativ, puteți utiliza bara de controale pentru start, pauză, stop, precum și pentru derularea materialului video, ajustarea volumului sonor sau redarea pe întregul ecran.</div>
+						</div>
+						
+						<div class="help help-static help-staticextra help-staticbook hide">
+							<div>Puteți imprima imaginea dând clic pe butonul <b>Printează</b>.</div>
+						</div>
+						
+						<div class="help help-staticdraw hide">
+							<p><strong>Desenează</strong></p>
+							<p>Utilizați panoul <b>Unelte desenare</b> pentru a alege culoarea sau dimensiunea creionului.</p>
+							<p>Acesta poate fi activat / dezactivat prin click pe butonul <b>Marchează / Desenează</b>, din bara de titlu a ferestrei.</p>
+							<div><b>Atenție!</b> Afișarea mesajului de ajutor (acest mesaj) dezactivează modul marcare / desenare. Reactivați conform instrucțiunilor de mai sus.</div>
+						</div>
+						
+						<div class="help help-complex well well-sm hide">
+							<p>Testul este alcătuit dintr-o secvență de activități interactive. Trecerea la pasul următor este posibilă în orice moment.</p>
+							<p>Apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu, apoi apăsați butonul albastru <b>Pasul următor</b> pentru a trece la următoarea activitate.</p>
+							<p>Activitatea curentă poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</p>
+							<div>Pentru fiecare activitate rezolvată corect veți obține câte o steluță. Rezultatele vor putea fi vizualizate după parcurgerea testului.</div>
+						</div>
+						
+						<div class="help help-dictionary help-staticdictionary hide">
+							<p><strong>Dicționar</strong></p>
+							<div>Prin această activitate descoperiți sensul unor cuvinte.</div>
+						</div>
+						
+						<div class="help help-quiz hide">
+							<p><strong>Quiz</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru alegerea variantei de răspuns corecte, prin clic pe căsuța corespunzătoare. Observați corectitudinea răspunsului și scorul curent. Apăsați butonul albastru <b>Înainte</b> pentru a trece la întrebarea următoare.</p>
+							<div>La final veți afla punctajul (scorul) obținut.</div>
+						</div>
+						
+						<div class="help help-dragdropgroup hide">
+							<p><strong>Grupare</strong></p>
+							<p>Urmăriți cerința, apoi utilizați mouse-ul pentru plasarea elementelor de pe banda rulantă (din centrul ecranului) în cele 4 categorii (aflate în partea stângă, respectiv dreaptă a ecranului), astfel: mențineți clic pe elementul vizibil de pe banda rulantă, apoi deplasați mouse-ul în așa fel încât elementul să fie repoziționat corespunzător.</p>
+							<p>La final, când nu a mai rămas nici un element pe banda rulantă, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-worksheet hide">
+							<p><strong>Fișă de lucru</strong></p>
+							<p>Urmăriți cerința, apoi utilizați tastatura pentru completarea răspunsurilor în căsuțele corespunzătoare.</p>
+							<div>La final, puteți imprima fișa de lucru dând clic pe butonul <b>Printează</b>.</div>
+						</div>
+						
+						<div class="help help-puzzle hide">
+							<p><strong>Puzzle</strong></p>
+							<p>Utilizați mouse-ul pentru deplasarea pieselor din partea dreaptă a zonei de lucru și reconstituiți imaginea, astfel: mențineți clic pe piesa dorită, apoi deplasați mouse-ul în așa fel încât aceasta să fie repoziționată corespunzător.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-rebus hide">
+							<p><strong>Rebus</strong></p>
+							<p>Răspundeți corect la întrebări şi completați jocul pe orizontală. Veți obţine pe verticală, de la A la B, un cuvânt nou. Utilizați tastatura pentru completarea răspunsurilor în căsuțele corespunzătoare.</p>
+							<p>La final, apăsați butonul verde <b>Validează</b> pentru a verifica dacă ați rezolvat corect întregul exercițiu.</p>
+							<div>Activitatea poate fi reluată (resetată) prin apăsarea butonului roșu <b>Încearcă din nou</b>.</div>
+						</div>
+						
+						<div class="help help-audio hide">
+							<p><strong>Audio</strong></p>
+							<div>Utilizați bara de controale pentru start, pauză, stop, precum și pentru derularea materialului audio sau ajustarea volumului sonor.</div>
+						</div>
+						
+						<div class="help help-timeline hide">
+							<p><strong>Axa cronologică</strong></p>
+							<div>Săgeata indică mijlocul frizei cronologice. Cu cât depărtați mai mult cursorul mouse-ului, pe suprafața frizei, de această săgeată, cu atât aceasta se va derula mai repede în direcția corespunzătoare.</div>
+						</div>
+						
+						<div class="help help-custom hide">
+							<div>Urmăriți indicațiile afișate în zona de lucru pentru îndeplinirea sarcinilor activității.</div>
+						</div>
+				
+					</div>
+				</div>
+		
+				<br />
+			
+				<div class="well well-sm clearfix hide" id="task-container">
+					
+					<audio id="content-task-audio"></audio>
+					
+					<p class="visible-xs content-task"></p>
+					
+					<button class="btn btn-info tt hide" id="btn-audio" style="margin-right: 10px;" data-toggle="tooltip" title="Ascultă">&nbsp;<span class="glyphicon glyphicon-volume-up"></span>&nbsp;</button> 
+					
+					<div class="task hidden-xs content-task"></div>
+					
+					<div class="pull-right hide" id="task-buttons">
+						<button class="btn btn-info hide" id="btn-score">Scor <span class="badge margin-left">0</span></button>
+						<button class="btn btn-success tt" id="btn-validate" style="width: 80px;" data-toggle="tooltip" title="Validează">&nbsp;<span class="glyphicon glyphicon-ok"></span>&nbsp;</button>
+						<button class="btn btn-danger tt" id="btn-reload" data-toggle="tooltip" title="Încearcă din nou">&nbsp;<span class="glyphicon glyphicon-refresh"></span>&nbsp;</button>
+						<button class="btn btn-primary tt hide" id="btn-forward" style="width: 100px;" data-toggle="tooltip" title="Pasul următor" ><span class="badge margin-right"></span> <span class="glyphicon glyphicon-forward"></span></button>
+					</div>
+					
+				</div>
+				
+				<div class="assignment hide">
+			
+					<div class="alert alert-danger hide">
+						Mai încearcă o dată!
+					</div>
+			
+					<div class="alert alert-success hide">
+						Corect!
+					</div>
+			
+					<!-- task image -->
+					<div class="row content-task-img hide">
+						<div class="col-sm-offset-1 col-sm-10">
+							<div class="well well-sm text-center">
+								<img src="" />
+							</div>
+						</div>
+					</div>
+					
+					<div id="assignment-canvas"></div>
+					
+				</div> <!-- end assignment -->
+				
+				<div class="text-center hide" id="alert-final">
+					
+					<!-- <div class="spacer"></div> -->
+					
+					<div class="alert alert-success text-xxl">
+						<strong>Felicitări!</strong><br />
+						Ai finalizat activitatea!
+					</div>
+					
+					<br />
+					
+					<p class="text-m">Iată ce rezultate ai obținut:</p>
+					
+					<br />
+					
+				</div>
+				
+				<div class="video hide">
+				
+					<div class="row">
+					
+						<div class="col-sm-offset-2 col-sm-8 no-margin-bottom">
+								
+							<div class="well well-sm text-left">
+							
+								<video controls>
+									Browser-ul utilizat nu permite redarea continutului video.
+								</video>
+			
+								<button class="btn btn-success btn-lg tt" title="Start / Pauză" data-placement="right" id="btn-play" style="width: 100px;">&nbsp;<span class="glyphicon glyphicon-play"></span>&nbsp;</button>
+								<button class="btn btn-danger pull-right margin-top tt" title="Stop" data-placement="left" id="btn-stop">&nbsp;<span class="glyphicon glyphicon-stop"></span>&nbsp;</button>
+								
+							</div>
+							
+						</div>
+					
+					</div>
+				
+				</div> <!-- end video -->
+			
+			
+				
+				<div class="static hide">
+				
+					<div class="row hidden-print">
+					
+						<div class="col-sm-12 no-margin-bottom">
+								
+							<div class="well well-sm text-center scrollable-x">
+								
+							</div>
+							
+						</div>
+					
+					</div>
+			
+					<div class="visible-print static-print">
+			
+					</div>
+				
+				</div> <!-- end static -->
+				
+				
+				
+				<div class="dictionary hide">
+				
+					<div class="row">
+					
+						<div class="col-sm-offset-2 col-sm-8 no-margin-bottomn">
+								
+							<div class="well">
+							
+								
+								
+							</div>
+							
+						</div>
+					
+					</div>
+				
+				</div> <!-- end dictionary -->
+			
+			</div> <!-- end container -->
+			
+		</div> <!-- end template content -->
+	
+	</body>
+	
+</html>
